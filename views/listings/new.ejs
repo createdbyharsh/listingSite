@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Create a new listing</h1>
+    <form method="post" action="/listings">
+      <input type="text" name="x[title]" placeholder="title" />
+      <br />
+      <textarea
+        name="x[description]"
+        id="description"
+        placeholder="description"
+      ></textarea>
+      <br />
+      <input type="text" name="x[image.url]" placeholder="Image URL" />
+      <br />
+      <input type="text" name="x[price]" placeholder="price" />
+      <br />
+      <input type="text" name="x[location]" placeholder="location" />
+      <br />
+      <input type="text" name="x[country]" placeholder="country" />
+      <input type="submit" name="submit" />
+    </form>
+  </body>
+</html>

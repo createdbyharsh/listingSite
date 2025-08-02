@@ -7,9 +7,13 @@
   </head>
   <body>
     <h1>working</h1>
+    <form method="GET" action="/listings/new">
+      <button>New Listing</button>
+    </form>
     <ul>
       <% allListings.map((x)=>{ %>
       <li><a href="/listings/<%=x.id%>"><%=x.title%></a></li>
+
       <% }) %>
     </ul>
   </body>
