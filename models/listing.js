@@ -5,15 +5,11 @@ const listingSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: String,
   image: {
-    type: String,
-    default:
-      "https://unsplash.com/photos/rocks-by-body-of-water-during-daytime-v17IhTzLICs",
-    set: (
-      x // ternary operator to set default image , if user does not uplaod image
-    ) =>
-      x === ""
-        ? "https://unsplash.com/photos/rocks-by-body-of-water-during-daytime-v17IhTzLICs"
-        : x,
+    filename: String,
+    url: {
+      type: String,
+      required: true,
+    },
   },
   price: Number,
   location: String,

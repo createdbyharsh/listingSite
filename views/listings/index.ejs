@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Airbnb</title>
+  </head>
+  <body>
+    <h1>working</h1>
+    <ul>
+      <% allListings.map((x)=>{ %>
+      <li><a href="/listings/<%=x.id%>"><%=x.title%></a></li>
+      <% }) %>
+    </ul>
+  </body>
+</html>
