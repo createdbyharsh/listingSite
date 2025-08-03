@@ -1,55 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <h1>Edit Your listing</h1>
-    <form method="Post" action="/listings/<%=result.id%>?_method=PUT">
-      <input
-        type="text"
-        name="x[title]"
-        placeholder="title"
-        value="<%=result.title%>"
-      />
-      <br />
-      <textarea
-        name="x[description]"
-        id="description"
-        placeholder="description"
-        value="<%=result.description%>"
-      ></textarea>
-      <br />
-      <input
-        type="text"
-        name="x[image.url]"
-        placeholder="Image URL"
-        value="<%=result.image.url%>"
-      />
-      <br />
-      <input
-        type="text"
-        name="x[price]"
-        placeholder="price"
-        value="<%=result.price%>"
-      />
-      <br />
-      <input
-        type="text"
-        name="x[location]"
-        placeholder="location"
-        value="<%=result.location%>"
-      />
-      <br />
-      <input
-        type="text"
-        name="x[country]"
-        placeholder="country"
-        value="<%=result.country%>"
-      />
-      <input type="submit" name="submit" value="Edit" />
-    </form>
-  </body>
-</html>
+<% layout("/layouts/boilerplate.ejs")%>
+<body>
+  <h1>Edit Your listing</h1>
+  <form method="Post" action="/listings/<%=result.id%>?_method=PUT">
+    <input
+      type="text"
+      name="x[title]"
+      placeholder="title"
+      value="<%=result.title%>"
+    />
+    <br />
+    <textarea
+      name="x[description]"
+      id="description"
+      placeholder="description"
+      value="<%=result.description%>"
+    ></textarea>
+    <br />
+    <input
+      type="text"
+      name="x[image.url]"
+      placeholder="Image URL"
+      value="<%=result.image.url%>"
+    />
+    <br />
+    <input
+      type="text"
+      name="x[price]"
+      placeholder="price"
+      value="<%=result.price%>"
+    />
+    <br />
+    <input
+      type="text"
+      name="x[location]"
+      placeholder="location"
+      value="<%=result.location%>"
+    />
+    <br />
+    <input
+      type="text"
+      name="x[country]"
+      placeholder="country"
+      value="<%=result.country%>"
+    />
+    <input type="submit" name="submit" value="Edit" />
+  </form>
+</body>

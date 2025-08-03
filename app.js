@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Listing = require("./models/listing.js");
 const path = require("path");
 const methodOverride = require("method-override");
+const ejsMate = require("ejs-mate");
 
 const app = express();
 const port = 3000;
@@ -13,6 +14,7 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(methodOverride("_method"));
+app.engine("ejs", ejsMate);
 
 async function main() {
   await mongoose.connect(MONGO_URL);

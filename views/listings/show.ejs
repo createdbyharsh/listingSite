@@ -1,24 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <h1><%=result.title%></h1>
-    <p><%=result.description%></p>
-    <ul>
-      <li>&#8377; <%= result.price.toLocaleString("en-IN")%></li>
-      <li><%= result.location %></li>
-      <li><%= result.country%></li>
-      <a href="/listings/edit/<%=result.id%>"><button>edit</button></a>
-      <form
-        method="post"
-        action="/listings/<%=result.id%>/delete?_method=Delete"
-      >
-        <input type="submit" value="Delete" />
-      </form>
-    </ul>
-  </body>
-</html>
+<% layout("/layouts/boilerplate.ejs")%>
+<body>
+  <h1><%=result.title%></h1>
+  <p><%=result.description%></p>
+  <ul>
+    <li>&#8377; <%= result.price.toLocaleString("en-IN")%></li>
+    <li><%= result.location %></li>
+    <li><%= result.country%></li>
+    <a href="/listings/edit/<%=result.id%>"><button>edit</button></a>
+    <form method="post" action="/listings/<%=result.id%>/delete?_method=Delete">
+      <input type="submit" value="Delete" />
+    </form>
+  </ul>
+</body>
