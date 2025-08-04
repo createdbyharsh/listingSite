@@ -12,7 +12,11 @@ body {
 .navbar {
   height: 4rem;
   background-color: white;
-  border: black solid 1px;
+}
+
+.card{
+  border: none !important;
+  margin-bottom: 2rem;
 }
 
 .fa-compass {
@@ -541,3 +545,6 @@ body {
   margin-bottom: -1rem;
 }
 
+.btns{
+  display: flex;
+}
