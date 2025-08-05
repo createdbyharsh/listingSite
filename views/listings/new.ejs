@@ -1,22 +1,73 @@
 <% layout("/layouts/boilerplate.ejs")%>
-<body>
-  <h1>Create a new listing</h1>
-  <form method="post" action="/listings">
-    <input type="text" name="x[title]" placeholder="title" />
-    <br />
-    <textarea
-      name="x[description]"
-      id="description"
-      placeholder="description"
-    ></textarea>
-    <br />
-    <input type="text" name="x[image.url]" placeholder="Image URL" />
-    <br />
-    <input type="text" name="x[price]" placeholder="price" />
-    <br />
-    <input type="text" name="x[location]" placeholder="location" />
-    <br />
-    <input type="text" name="x[country]" placeholder="country" />
-    <input type="submit" name="submit" />
+
+<div class="container mt-5">
+  <h1 class="mb-4">Create a New Listing</h1>
+  <form method="post" action="/listings" novalidate class="needs-validation">
+    <div class="mb-3">
+      <label class="form-label">Title</label>
+      <input
+        type="text"
+        name="x[title]"
+        class="form-control"
+        placeholder="Title"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Description</label>
+      <textarea
+        name="x[description]"
+        id="description"
+        class="form-control"
+        placeholder="Description"
+        required
+      ></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Image URL</label>
+      <input
+        type="text"
+        name="x[image][url]"
+        class="form-control"
+        placeholder="Image URL"
+      />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Price</label>
+      <input
+        type="number"
+        name="x[price]"
+        class="form-control"
+        placeholder="Price"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Location</label>
+      <input
+        type="text"
+        name="x[location]"
+        class="form-control"
+        placeholder="Location"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Country</label>
+      <input
+        type="text"
+        name="x[country]"
+        class="form-control"
+        placeholder="Country"
+        required
+      />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
   </form>
-</body>
+</div>

@@ -1,48 +1,96 @@
 <% layout("/layouts/boilerplate.ejs")%>
-<body>
-  <h1>Edit Your listing</h1>
-  <form method="Post" action="/listings/<%=result.id%>?_method=PUT">
-    <input
-      type="text"
-      name="x[title]"
-      placeholder="title"
-      value="<%=result.title%>"
-    />
-    <br />
-    <textarea
-      name="x[description]"
-      id="description"
-      placeholder="description"
-      value="<%=result.description%>"
-    ></textarea>
-    <br />
-    <input
-      type="text"
-      name="x[image.url]"
-      placeholder="Image URL"
-      value="<%=result.image.url%>"
-    />
-    <br />
-    <input
-      type="text"
-      name="x[price]"
-      placeholder="price"
-      value="<%=result.price%>"
-    />
-    <br />
-    <input
-      type="text"
-      name="x[location]"
-      placeholder="location"
-      value="<%=result.location%>"
-    />
-    <br />
-    <input
-      type="text"
-      name="x[country]"
-      placeholder="country"
-      value="<%=result.country%>"
-    />
-    <input type="submit" name="submit" value="Edit" />
-  </form>
-</body>
+
+<div class="container mt-5">
+  <h1 class="mb-4 text-center">Edit Your Listing</h1>
+  <div class="card p-4 shadow-sm">
+    <form
+      method="POST"
+      action="/listings/<%= result.id %>?_method=PUT"
+      novalidate
+      class="needs-validation"
+    >
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input
+          type="text"
+          class="form-control"
+          id="title"
+          name="x[title]"
+          placeholder="Title"
+          value="<%= result.title %>"
+          required
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea
+          class="form-control"
+          id="description"
+          name="x[description]"
+          placeholder="Description"
+          rows="3"
+          required
+        >
+<%= result.description %></textarea
+        >
+      </div>
+
+      <div class="mb-3">
+        <label for="imageUrl" class="form-label">Image URL</label>
+        <input
+          type="text"
+          class="form-control"
+          id="imageUrl"
+          name="x[image][url]"
+          placeholder="Image URL"
+          value="<%= result.image.url %>"
+          required
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="price" class="form-label">Price</label>
+        <input
+          type="number"
+          class="form-control"
+          id="price"
+          name="x[price]"
+          placeholder="Price"
+          value="<%= result.price %>"
+          required
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="location" class="form-label">Location</label>
+        <input
+          type="text"
+          class="form-control"
+          id="location"
+          name="x[location]"
+          placeholder="Location"
+          value="<%= result.location %>"
+          required
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="country" class="form-label">Country</label>
+        <input
+          type="text"
+          class="form-control"
+          id="country"
+          name="x[country]"
+          placeholder="Country"
+          value="<%= result.country %>"
+          required
+        />
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">
+        Update Listing
+      </button>
+    </form>
+  </div>
+</div>

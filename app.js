@@ -4,6 +4,7 @@ const Listing = require("./models/listing.js");
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
+const wrapAsync = require("./utils/wrapAsync.js");
 
 const app = express();
 const port = 3000;
@@ -28,10 +29,13 @@ main()
     console.log(err);
   });
 
-app.get("/listings", async (req, res) => {
-  const allListings = await Listing.find();
-  res.render("listings/index.ejs", { allListings });
-});
+app.get(
+  "/listings",
+  wrapAsync(async (req, res) => {
+    const allListings = await Listing.find();
+    res.render("listings/index.ejs", { allListings });
+  })
+);
 
 app.get("/listings/new", (req, res) => {
   res.render("listings/new.ejs");
@@ -44,7 +48,8 @@ app.get("/listings/:id", async (req, res) => {
 });
 
 app.post("/listings", async (req, res) => {
-  const newListing = new Listing(req.body.x); // mongoose function to
+  console.log(req.body);
+  const newListing = new Listing(req.body.x); // mongoose function to add data
   await newListing.save();
   res.redirect("/listings");
 });
@@ -55,16 +60,23 @@ app.get("/listings/edit/:id", async (req, res) => {
   res.render("listings/edit.ejs", { result });
 });
 
-app.put("/listings/:id", async (req, res) => {
-  let { id } = req.params;
-  await Listing.findByIdAndUpdate(id, { ...req.body.x });
-  res.redirect("/listings");
-});
+app.put(
+  "/listings/:id",
+  wrapAsync(async (req, res) => {
+    let { id } = req.params;
+    await Listing.findByIdAndUpdate(id, { ...req.body.x });
+    res.redirect("/listings");
+  })
+);
 
 app.delete("/listings/:id/delete", async (req, res) => {
   let { id } = req.params;
   await Listing.findByIdAndDelete(id);
   res.redirect("/listings");
+});
+
+app.use((err, req, res, next) => {
+  res.send("Something went wrong");
 });
 
 app.listen(port, () => {
