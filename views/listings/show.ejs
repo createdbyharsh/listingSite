@@ -3,15 +3,16 @@
 <div class="container mt-5">
   <div class="row justify-content-center">
     <div class="col-md-8">
-      <div class="card shadow">
+      <div class="card border rounded-3 mb-4">
+        <!-- removed 'shadow' class -->
         <img
           src="<%= result.image.url %>"
-          class="card-img-top show-img"
+          class="card-img-top rounded-top"
           alt="Listing image"
         />
 
         <div class="card-body">
-          <h4 class="card-title mb-2"><b><%= result.title %></b></h4>
+          <h4 class="card-title mb-3 fw-bold"><%= result.title %></h4>
           <p class="card-text"><%= result.description %></p>
           <ul class="list-unstyled">
             <li>
@@ -23,15 +24,53 @@
           </ul>
         </div>
 
-        <div class="card-footer d-flex justify-content-between">
-          <a href="/listings/<%= result.id %>/edit" class="btn btn-dark"
-            >Edit</a
+        <div
+          class="card-footer bg-white d-flex justify-content-between border-top"
+        >
+          <a
+            href="/listings/<%= result.id %>/edit"
+            class="btn btn-outline-dark"
           >
+            Edit
+          </a>
           <form
             method="POST"
             action="/listings/<%= result.id %>?_method=DELETE"
           >
-            <button type="submit" class="btn btn-danger">Delete</button>
+            <button type="submit" class="btn btn-outline-danger">Delete</button>
+          </form>
+        </div>
+
+        <!-- You had an extra 'col-8 offset-3' inside card. Placed it correctly -->
+        <div class="p-4 border-top">
+          <h5 class="mb-3">Leave a Review</h5>
+          <form action="/listings/<%=result.id%>/review" method="POST">
+            <div class="mb-3">
+              <label for="rating" class="form-label">Rating</label>
+              <input
+                type="range"
+                class="form-range"
+                min="1"
+                max="5"
+                id="rating"
+                name="review[rating]"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="comment" class="form-label">Comments</label>
+              <textarea
+                class="form-control"
+                name="review[comment]"
+                id="comment"
+                rows="5"
+                placeholder="Write your thoughts here..."
+              ></textarea>
+            </div>
+            <div class="text-end">
+              <button type="submit" class="btn btn-primary">
+                Submit Review
+              </button>
+            </div>
           </form>
         </div>
       </div>

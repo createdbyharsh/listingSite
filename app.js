@@ -7,6 +7,7 @@ const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
 const { listingSchema } = require("./schemaValidate.js");
+const Review = require("./models/review.js");
 
 const app = express();
 const port = 3000;
@@ -103,6 +104,18 @@ app.delete(
     res.redirect("/listings");
   })
 );
+
+app.post("/listings/:id/review", async (req, res) => {
+  let { id } = req.params;
+  let listing = await Listing.findById(id); // gets full listing data
+  const newReview = new Review(req.body.review); // mongoose function to add data
+
+  listing.reviews.push(newReview); // accessing and adding data
+
+  await newReview.save();
+  await listing.save();
+  res.redirect(`/listings/${id}`);
+});
 
 app.all(/.*/, (req, res, next) => {
   next(new ExpressError(404, "Page not found"));
