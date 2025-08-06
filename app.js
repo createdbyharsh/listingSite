@@ -31,14 +31,12 @@ main()
     console.log(err);
   });
 
+// error handling function
+
 const validateListing = (req, res, next) => {
   let { error } = listingSchema.validate(req.body);
   if (error) {
-    let errMsg = error.details
-      .map((x) => {
-        x.message;
-      })
-      .join(",");
+    let errMsg = error.details.map((z) => z.message).join(",");
     throw new ExpressError(400, errMsg);
   } else {
     next();
@@ -74,7 +72,6 @@ app.post(
   "/listings",
   validateListing,
   wrapAsync(async (req, res, next) => {
-    listingSchema.validate(req.body);
     const newListing = new Listing(req.body.x); // mongoose function to add data
     await newListing.save();
     res.redirect("/listings");
