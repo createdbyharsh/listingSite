@@ -43,6 +43,7 @@ router.post(
   wrapAsync(async (req, res, next) => {
     const newListing = new Listing(req.body.x); // mongoose function to add data
     await newListing.save();
+    req.flash("success", "New listing created");
     res.redirect("/listings");
   })
 );
@@ -52,6 +53,7 @@ router.put(
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     await Listing.findByIdAndUpdate(id, { ...req.body.x });
+    req.flash("success", "listing updated");
     res.redirect("/listings");
   })
 );
@@ -69,6 +71,7 @@ router.delete(
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     await Listing.findByIdAndDelete(id);
+    req.flash("success", " listing Deleted");
     res.redirect("/listings");
   })
 );

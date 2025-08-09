@@ -1,14 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const Listing = require("./models/listing.js");
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
-const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
-const { listingSchema } = require("./schemaValidate.js");
-const Review = require("./models/review.js");
-const { reviewSchema } = require("./schemaValidate.js");
+const session = require("express-session");
+const flash = require("connect-flash");
 
 const listings = require("./routes/listingRouter.js");
 const reviews = require("./routes/reviewRouter.js");
@@ -16,6 +13,26 @@ const reviews = require("./routes/reviewRouter.js");
 const app = express();
 const port = 3000;
 const MONGO_URL = "mongodb://127.0.0.1:27017/airbnb";
+const sessionOptions = {
+  secret: "mysupersecretcode",
+  resave: false,
+  saveUninitialized: true,
+  // setting expiry date
+  cookie: {
+    expires: Date.now() + 7 * 24 * 60 * 60 * 1000, // milliseconds
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    httpOnly: true, // to avaid cross-scripting attacks
+  },
+};
+
+app.use(session(sessionOptions));
+app.use(flash());
+
+// flash middleware
+app.use((req, res, next) => {
+  res.locals.success = req.flash("success");
+  next();
+});
 
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
@@ -37,21 +54,21 @@ main()
     console.log(err);
   });
 
-app.use("/listings", listings);
-app.use("/listings/:id/review", reviews);
-
 app.get("/", (req, res) => {
   res.redirect("/listings");
 });
 
-// app.all(/.*/, (req, res, next) => {
-//   next(new ExpressError(404, "Page not found"));
-// });
+app.use("/listings", listings);
+app.use("/listings/:id/review", reviews);
 
-// app.use((err, req, res, next) => {
-//   let { statusCode = 501, message = "Something went wrong" } = err;
-//   res.status(statusCode).render("error.ejs", { message });
-// });
+app.all(/.*/, (req, res, next) => {
+  next(new ExpressError(404, "Page not found"));
+});
+
+app.use((err, req, res, next) => {
+  let { statusCode = 501, message = "Something went wrong" } = err;
+  res.status(statusCode).render("error.ejs", { message });
+});
 
 app.listen(port, () => {
   console.log("App is running at port 3000");

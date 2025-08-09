@@ -28,7 +28,7 @@ router.post(
     listing.reviews.push(newReview._id); // accessing listing data and adding review id
     await newReview.save();
     await listing.save();
-
+    req.flash("success", "Review Created");
     res.redirect(`/listings/${id}`);
   })
 );
@@ -41,6 +41,7 @@ router.delete(
 
     await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewid } }); // pulling is the update here
     await Review.findByIdAndDelete(reviewid);
+    req.flash("success", "Review Deleted");
     res.redirect(`/listings/${id}`);
   })
 );
