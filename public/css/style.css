@@ -548,6 +548,10 @@ body {
 .btns{
   display: flex;
 }
-.alert-success{
+.alert-success {
+  margin-bottom: 1rem;
+}
+
+ .alert-danger{
   margin-bottom: 1rem;
 }
