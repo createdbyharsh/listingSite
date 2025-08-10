@@ -4,7 +4,7 @@ const Listing = require("../models/listing.js");
 const wrapAsync = require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/ExpressError.js");
 const { listingSchema } = require("../schemaValidate.js");
-const isLoggedIn = require("../middleware/isLoggedIn.js");
+const { isLoggedIn } = require("../middleware/isLoggedIn.js");
 
 // error handling function
 const validateListing = (req, res, next) => {
