@@ -2,20 +2,12 @@ const express = require("express");
 const router = express.Router();
 const Listing = require("../models/listing.js");
 const wrapAsync = require("../utils/wrapAsync.js");
-const ExpressError = require("../utils/ExpressError.js");
-const { listingSchema } = require("../schemaValidate.js");
-const { isLoggedIn } = require("../middleware/isLoggedIn.js");
 
-// error handling function
-const validateListing = (req, res, next) => {
-  let { error } = listingSchema.validate(req.body);
-  if (error) {
-    let errMsg = error.details.map((z) => z.message).join(",");
-    throw new ExpressError(400, errMsg);
-  } else {
-    next();
-  }
-};
+const {
+  isLoggedIn,
+  isOwner,
+  validateListing,
+} = require("../middleware/isLoggedIn.js");
 
 router.get(
   "/",
@@ -33,7 +25,9 @@ router.get(
   "/:id",
   wrapAsync(async (req, res) => {
     const { id } = req.params;
-    const result = await Listing.findById(id).populate("reviews");
+    const result = await Listing.findById(id)
+      .populate("reviews")
+      .populate("owner");
     if (!result) {
       req.flash("error", "Your requested listing doesnt exist");
       return res.redirect("/listings");
@@ -48,6 +42,7 @@ router.post(
   validateListing,
   wrapAsync(async (req, res, next) => {
     const newListing = new Listing(req.body.x); // mongoose function to add data
+    newListing.owner = req.user._id; // inserting the userinfo into listings collections
     await newListing.save();
     req.flash("success", "New listing created");
     res.redirect("/listings");
@@ -57,6 +52,7 @@ router.post(
 router.put(
   "/:id",
   isLoggedIn,
+  isOwner,
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     await Listing.findByIdAndUpdate(id, { ...req.body.x });
@@ -68,6 +64,7 @@ router.put(
 router.get(
   "/:id/edit",
   isLoggedIn,
+  isOwner,
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     let result = await Listing.findById(id);
@@ -82,6 +79,7 @@ router.get(
 router.delete(
   "/:id",
   isLoggedIn,
+  isOwner,
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     await Listing.findByIdAndDelete(id);

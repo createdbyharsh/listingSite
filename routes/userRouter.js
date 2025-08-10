@@ -18,6 +18,7 @@ router.post(
       let { username, email, password } = req.body;
       const newUser = new User({ email, username });
       let registeredUser = await User.register(newUser, password);
+      //login after registration code
       req.login(registeredUser, (err) => {
         if (err) {
           return next(err);

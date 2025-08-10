@@ -4,7 +4,6 @@
     <div class="row justify-content-center">
       <div class="col-md-8">
         <div class="card border rounded-3 mb-4">
-          <!-- removed 'shadow' class -->
           <img
             src="<%= result.image.url %>"
             class="card-img-top rounded-top"
@@ -12,6 +11,7 @@
           />
 
           <div class="card-body">
+            <p>Created by: <i><%=result.owner.username%></i></p>
             <h4 class="card-title mb-3 fw-bold"><%= result.title %></h4>
             <p class="card-text"><%= result.description %></p>
             <ul class="list-unstyled">
@@ -24,6 +24,7 @@
             </ul>
           </div>
 
+          <% if(currUser && currUser._id.equals(result.owner._id)){ %>
           <div
             class="card-footer bg-white d-flex justify-content-between border-top"
           >
@@ -42,8 +43,10 @@
               </button>
             </form>
           </div>
+          <%} %>
 
-          <!-- You had an extra 'col-8 offset-3' inside card. Placed it correctly -->
+          <!--Add review section-->
+          <%if(currUser && currUser._id.equals(result.owner._id)){%>
           <div class="p-4 border-top">
             <h5 class="mb-3">Leave a Review</h5>
             <form
@@ -83,8 +86,10 @@
               </div>
             </form>
           </div>
+          <%}%>
 
           <!--reviews section-->
+
           <section>
             <div class="p-4 border-top">
               <h4 class="mb-4">Reviews</h4>
@@ -111,6 +116,7 @@
                   </div>
                   <p class="mb-0 text-secondary"><%= x.comment %></p>
                 </div>
+                <%if(currUser && currUser._id.equals(result.owner._id)){%>
                 <form
                   action="/listings/<%= result.id %>/review/<%= x._id %>?_method=DELETE"
                   method="POST"
@@ -120,6 +126,7 @@
                     Delete
                   </button>
                 </form>
+                <%}%>
               </div>
               <% }) %> <% } %>
             </div>
