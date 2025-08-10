@@ -14,8 +14,7 @@ router.post(
     try {
       let { username, email, password } = req.body;
       const newUser = new User({ email, username });
-      const result = await User.register(newUser, password);
-      console.log(result);
+      await User.register(newUser, password);
       req.flash("success", "Registration successfull");
       res.redirect("/listings");
     } catch (e) {

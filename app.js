@@ -55,6 +55,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 
+//Database connection
 async function main() {
   await mongoose.connect(MONGO_URL);
 }
@@ -67,6 +68,7 @@ main()
     console.log(err);
   });
 
+// Routes
 app.get("/", (req, res) => {
   res.redirect("/listings");
 });

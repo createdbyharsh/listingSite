@@ -5,6 +5,7 @@ const wrapAsync = require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/ExpressError.js");
 const Review = require("../models/review.js");
 const { reviewSchema } = require("../schemaValidate.js");
+const isLoggedIn = require("../middleware/isLoggedIn.js");
 
 // error handling function
 const validateReview = (req, res, next) => {
@@ -20,6 +21,7 @@ const validateReview = (req, res, next) => {
 // Post review route
 router.post(
   "/",
+  isLoggedIn,
   validateReview,
   wrapAsync(async (req, res) => {
     let { id } = req.params;
@@ -36,6 +38,7 @@ router.post(
 // Delete review route
 router.delete(
   "/:reviewid",
+  isLoggedIn,
   wrapAsync(async (req, res) => {
     let { id, reviewid } = req.params;
 
