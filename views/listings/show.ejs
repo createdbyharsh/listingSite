@@ -46,7 +46,7 @@
           <%} %>
 
           <!--Add review section-->
-          <%if(currUser && currUser._id.equals(result.owner._id)){%>
+          <%if(currUser){%>
           <div class="p-4 border-top">
             <h5 class="mb-3">Leave a Review</h5>
             <form
@@ -104,7 +104,7 @@
                   <div
                     class="d-flex justify-content-between align-items-center mb-2"
                   >
-                    <h6 class="mb-0">Anonymous User</h6>
+                    <h6 class="mb-0"><%=x.author.username%></h6>
                     <div>
                       <% for (let i = 1; i <= 5; i++) { %> <% if (i <= x.rating)
                       { %>
@@ -114,9 +114,10 @@
                       <% } %> <% } %>
                     </div>
                   </div>
-                  <p class="mb-0 text-secondary"><%= x.comment %></p>
+                  <p class="mb-0 text-secondary"><%= x.comment %>c</p>
                 </div>
-                <%if(currUser && currUser._id.equals(result.owner._id)){%>
+                <% if (currUser && x.author &&
+                currUser._id.equals(x.author._id)) { %>
                 <form
                   action="/listings/<%= result.id %>/review/<%= x._id %>?_method=DELETE"
                   method="POST"
@@ -126,7 +127,7 @@
                     Delete
                   </button>
                 </form>
-                <%}%>
+                <% } %>
               </div>
               <% }) %> <% } %>
             </div>

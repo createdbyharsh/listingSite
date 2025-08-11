@@ -20,8 +20,8 @@ router.post(
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     let listing = await Listing.findById(id); // gets full listing data
-
-    const newReview = new Review(req.body.review); // mongoose function to add data
+    let newReview = new Review(req.body.review); // mongoose function to add data
+    newReview.author = req.user._id;
     listing.reviews.push(newReview._id); // accessing listing data and adding review id
     await newReview.save();
     await listing.save();
@@ -34,7 +34,7 @@ router.post(
 router.delete(
   "/:reviewid",
   isLoggedIn,
-  isOwner,
+  reviewOwner,
   wrapAsync(async (req, res) => {
     let { id, reviewid } = req.params;
 

@@ -2,6 +2,7 @@ const Listing = require("../models/listing");
 const ExpressError = require("../utils/ExpressError.js");
 const { listingSchema } = require("../schemaValidate.js");
 const { reviewSchema } = require("../schemaValidate.js");
+const Review = require("../models/review.js");
 
 module.exports.isLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
@@ -51,9 +52,9 @@ module.exports.validateReview = (req, res, next) => {
 };
 
 module.exports.reviewOwner = async (req, res, next) => {
-  let { id } = req.params;
-  let listing = await Listing.findById(id);
-  if (listing.owner._id.equals(req.user._id)) {
+  let { id, reviewid } = req.params;
+  let review = await Review.findById(reviewid);
+  if (!review.author.equals(res.locals.currUser._id)) {
     req.flash("error", "forbidden");
     return res.redirect(`/listings/${id}` || "/listings");
   }
