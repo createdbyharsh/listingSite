@@ -18,18 +18,29 @@ const {
   validateListing,
 } = require("../middleware/isLoggedIn.js");
 
-router.get("/", wrapAsync(index));
+router
+  .route("/")
+  .get(wrapAsync(index))
+  .post(isLoggedIn, validateListing, wrapAsync(createListing));
 
 router.get("/new", isLoggedIn, newListingForm);
 
-router.get("/:id", wrapAsync(viewListing));
-
-router.post("/", isLoggedIn, validateListing, wrapAsync(createListing));
-
-router.put("/:id", isLoggedIn, isOwner, wrapAsync(updateListing));
+router
+  .route("/:id")
+  .get(wrapAsync(viewListing))
+  .put(isLoggedIn, isOwner, wrapAsync(updateListing))
+  .delete(isLoggedIn, isOwner, wrapAsync(deleteListing));
 
 router.get("/:id/edit", isLoggedIn, isOwner, wrapAsync(renderEditForm));
 
-router.delete("/:id", isLoggedIn, isOwner, wrapAsync(deleteListing));
-
 module.exports = router;
+
+// router.get("/", wrapAsync(index));
+
+// router.get("/:id", wrapAsync(viewListing));
+
+// router.post("/", isLoggedIn, validateListing, wrapAsync(createListing));
+
+// router.put("/:id", isLoggedIn, isOwner, wrapAsync(updateListing));
+
+// router.delete("/:id", isLoggedIn, isOwner, wrapAsync(deleteListing));

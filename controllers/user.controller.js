@@ -1,9 +1,5 @@
 const express = require("express");
-const router = express.Router();
 const User = require("../models/user");
-const wrapAsync = require("../utils/wrapAsync");
-const passport = require("passport");
-const { saveRedirectUrl } = require("../middleware/isLoggedIn");
 
 module.exports.GetSignUp = (req, res) => {
   res.render("users/signup.ejs");
