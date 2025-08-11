@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
-const Listing = require("../models/listing.js");
 const wrapAsync = require("../utils/wrapAsync.js");
-const Review = require("../models/review.js");
+const {
+  createReview,
+  deleteReview,
+} = require("../controllers/reviews.controller.js");
 
 const {
   isLoggedIn,
@@ -12,37 +14,9 @@ const {
 } = require("../middleware/isLoggedIn.js");
 
 // Post review route
-router.post(
-  "/",
-  isLoggedIn,
-  // reviewOwner,
-  validateReview,
-  wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    let listing = await Listing.findById(id); // gets full listing data
-    let newReview = new Review(req.body.review); // mongoose function to add data
-    newReview.author = req.user._id;
-    listing.reviews.push(newReview._id); // accessing listing data and adding review id
-    await newReview.save();
-    await listing.save();
-    req.flash("success", "Review Created");
-    res.redirect(`/listings/${id}`);
-  })
-);
+router.post("/", isLoggedIn, validateReview, wrapAsync(createReview));
 
 // Delete review route
-router.delete(
-  "/:reviewid",
-  isLoggedIn,
-  reviewOwner,
-  wrapAsync(async (req, res) => {
-    let { id, reviewid } = req.params;
-
-    await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewid } }); // pulling is the update here
-    await Review.findByIdAndDelete(reviewid);
-    req.flash("success", "Review Deleted");
-    res.redirect(`/listings/${id}`);
-  })
-);
+router.delete("/:reviewid", isLoggedIn, reviewOwner, wrapAsync(deleteReview));
 
 module.exports = router;
