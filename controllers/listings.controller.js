@@ -1,5 +1,6 @@
 const express = require("express");
 const Listing = require("../models/listing.js");
+const cloudinary = require("cloudinary").v2;
 
 module.exports.index = async (req, res) => {
   const allListings = await Listing.find();
@@ -35,9 +36,29 @@ module.exports.createListing = async (req, res, next) => {
 
 module.exports.updateListing = async (req, res) => {
   let { id } = req.params;
-  await Listing.findByIdAndUpdate(id, { ...req.body.x });
-  req.flash("success", "listing updated");
-  res.redirect("/listings");
+  // Get the existing listing first so we can delete its old image if needed
+  let listing = await Listing.findById(id);
+  if (!listing) {
+    req.flash("error", "Listing not found");
+    return res.redirect("/listings");
+  }
+  // Update basic fields from form
+  listing.set(req.body.x);
+  // If a new file was uploaded
+  if (req.file) {
+    // Delete old image from Cloudinary if it exists
+    if (listing.image && listing.image.filename) {
+      await cloudinary.uploader.destroy(listing.image.filename);
+    }
+    // Save new image info
+    listing.image = {
+      url: req.file.path,
+      filename: req.file.filename,
+    };
+  }
+  await listing.save();
+  req.flash("success", "Listing updated");
+  res.redirect(`/listings/${id}`);
 };
 
 module.exports.renderEditForm = async (req, res) => {
@@ -52,6 +73,11 @@ module.exports.renderEditForm = async (req, res) => {
 
 module.exports.deleteListing = async (req, res) => {
   let { id } = req.params;
+  let listing = await Listing.findById(id);
+
+  if (listing.image && listing.image.filename) {
+    await cloudinary.uploader.destroy(listing.image.filename);
+  }
   await Listing.findByIdAndDelete(id);
   req.flash("success", " listing Deleted");
   res.redirect("/listings");

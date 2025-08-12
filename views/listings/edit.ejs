@@ -8,6 +8,7 @@
       action="/listings/<%= result.id %>?_method=PUT"
       novalidate
       class="needs-validation"
+      enctype="multipart/form-data"
     >
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
@@ -32,20 +33,29 @@
           rows="3"
           required
         >
-<%= result.description %></textarea
+          <%= result.description %></textarea
         >
       </div>
 
+      <div class="row">
+        <div class="col-3">
+          <img
+            src="<%= result.image.url %>"
+            alt="original image"
+            class="img-fluid"
+          />
+          <p><i>Original image</i></p>
+        </div>
+      </div>
+
       <div class="mb-3">
-        <label for="imageUrl" class="form-label">Image URL</label>
+        <label for="imageUrl" class="form-label">Update your Image</label>
         <input
-          type="text"
+          type="file"
           class="form-control"
           id="imageUrl"
-          name="x[image][url]"
-          placeholder="Image URL"
-          value="<%= result.image.url %>"
-          required
+          name="x[image]"
+          placeholder="Image"
         />
       </div>
 
