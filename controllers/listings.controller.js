@@ -23,7 +23,10 @@ module.exports.viewListing = async (req, res) => {
 };
 
 module.exports.createListing = async (req, res, next) => {
+  let url = req.file.path;
+  let filename = req.file.filename;
   const newListing = new Listing(req.body.x); // mongoose function to add data
+  newListing.image = { url, filename }; // inserting the url and filename from cloudinary
   newListing.owner = req.user._id; // inserting the userinfo into listings collections
   await newListing.save();
   req.flash("success", "New listing created");

@@ -1,3 +1,8 @@
+if (process.env.NODE_ENV != "production") {
+  require("dotenv").config();
+}
+console.log(process.env);
+
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
@@ -78,14 +83,14 @@ app.use("/listings", listingsRouter);
 app.use("/listings/:id/review", reviewsRouter);
 app.use("/", userRouter);
 
-app.all(/.*/, (req, res, next) => {
-  next(new ExpressError(404, "Page not found"));
-});
+// app.all(/.*/, (req, res, next) => {
+//   next(new ExpressError(404, "Page not found"));
+// });
 
-app.use((err, req, res, next) => {
-  let { statusCode = 501, message = "Something went wrong" } = err;
-  res.status(statusCode).render("error.ejs", { message });
-});
+// app.use((err, req, res, next) => {
+//   let { statusCode = 501, message = "Something went wrong" } = err;
+//   res.status(statusCode).render("error.ejs", { message });
+// });
 
 app.listen(port, () => {
   console.log("App is running at port 3000");
